@@ -1,53 +1,24 @@
-segment code ; Define o início do segmento de código. Aqui entram as instruções do
+segment code
+..start:
+; iniciar os registros de segmento DS e SS e o ponteiro de pilha SP
+    mov ax,data
+    mov ds,ax
+    mov ax,stack
+    mov ss,ax
+    mov sp,stacktop
 
-; programa.
-
-..start: ; Este rótulo indica para o NASM onde o programa começa.
-; Inicialização dos registros de segmentos.
-MOV AX,data
-MOV DS,AX
-MOV
-MOV
-MOV
-
-
-
-AX,stack
-SS,AX
-SP,stacktop
-
-; Move o endereço de “data” para AX
-; Atualiza o DS com o endereço de “data”
-; Move o endereço de “stack” para AX
-; Atualiza o SS com o endereço de “stack”
-; Atualiza o SP com o topo da pilha “stacktop”
-
-; código do programa
-:
-:
-:
-
-; Aqui entram as instruções do programa
-
-; Terminar o programa e voltar para o sistema operacional
-MOV
-INT
-
-AH,4Ch
-21h
-
-; Move o valor de 0x4C para o registrador AH
-; Chama a interrupção do DOS 0x21
-
-; definicao das variáveis
+    ;Exibindo a mensagem 
+    mov ah,9        ;Define a função 9 da interrupção 21h (exibir string terminada por '$')
+    mov dx,mensagem ; Carrega o endereço da string (mensagem) no registrador DX
+    int 21h         ; Chama a interrupção 21h para exibir a string
+    
+    ; Terminar o programa e voltar para o sistema operacional
+    mov ah,4ch
+    int 21h
 segment data
-:
-:
-:
-
-; Define o início do segmento de dados. Aqui serão
-; definidas as variáveis do programa.
-
-; definição da pilha com total de 256 bytes
-segment stack stack ; Define o início do segmento de pilha e associa um nome a este segmento.
-RESB 256
+    CR equ 0dh
+    LF equ 0ah
+    mensagem db ‘Oi, olha eu aqui’,CR,LF,’$’
+segment stack stack
+    resb 256
+stacktop:
